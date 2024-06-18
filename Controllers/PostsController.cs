@@ -29,5 +29,19 @@ public class PostsController : ControllerBase
         await _postsService.CreatePost(post);
         return CreatedAtAction(nameof(GetPost), new { id = post.Id }, post);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdatePost(int id, Post post) {
+        if(id != post.Id) {
+            return BadRequest();
+        }
+
+        var updatedPost = await _postsService.UpdatePost(id, post);
+        if(updatedPost == null) {
+            return NotFound();
+        }
+
+        return Ok(updatedPost);
+    }
 }
 
